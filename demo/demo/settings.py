@@ -27,7 +27,7 @@ SECRET_KEY = '421(-f96(jblug!-12854d&-pwplv516bc!r87-5xxs_+qz9!d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://van7.pythonanywhere.com']
 
 
 # Application definition
