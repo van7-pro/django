@@ -238,3 +238,38 @@ def user_logout(request):
     # Take the user back to the homepage.
     return redirect(reverse('my_app:index'))
 
+
+@login_required
+def like_category(request):
+    cat_id = None
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+    likes = 0
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        if cat:
+            likes = cat.likes + 1
+            cat.likes = likes
+            cat.save()
+    return HttpResponse(likes)
+
+
+def get_category_list(max_results=0, starts_with=''):
+    category_list = []
+
+    if starts_with:
+        category_list = Category.objects.filter(name__istartswith=starts_with)
+
+    if max_results > 0:
+        if len(category_list) > max_results:
+            category_list = category_list[:max_results]
+    return category_list
+
+
+def suggest_category(request):
+    starts_with = ''
+
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+    cat_list = get_category_list(8, starts_with)
+    return render(request, 'my_app/categories.html', {'categories': cat_list})
